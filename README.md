@@ -1,6 +1,6 @@
 # WatchLog
 ### Track and Review Your Favourite Shows!
-<p>Sign Up, View Shows you watched, leave a review, like other's reviews!</p>
+<p>Sign Up, View Shows you watched, Invite friends to watch-a-long</p>
 
 ## User Stories
 * As a User, i want to have an account i can register and sign up
