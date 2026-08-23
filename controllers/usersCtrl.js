@@ -3,18 +3,44 @@ const User = require('../models/user')
 
 const index = async (req, res) => {
     try {
+        const search = req.query.search
+
+
         const users = await User.find()
-        res.send(users)
+
+        res.render("users/index.ejs", { users, search })
     } catch (error) {
         console.log(error)
         res.redirect("/")
     }
 }
 
+
+const search = async (req, res) => {
+    try {
+        const search = req.query.search
+
+        let users
+
+        if (search) {
+            users = await User.find({
+                username: { $regex: search, $options: "i" },
+            })
+        } else {
+            users = await User.find()
+        }
+        res.json(users)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: "Server error" })
+    }
+}
+
+
 const show = async (req, res) => {
     try {
-        const user = await User.findById(req.params.id)
-        res.send(user)
+        const userObject = await User.findById(req.params.id)
+        res.render('users/show.ejs', { userObject })
     } catch (error) {
         console.log(error)
         res.redirect("/")
@@ -78,7 +104,8 @@ const addToWatchlist = async (req, res) => {
 
 const friends = async (req, res) => {
     try {
-        const user = await User.findById(req.params.id)
+        const user = await User.findById(req.params.id).populate('friends')
+        if (!user) return res.redirect("/")
         const friends = user.friends;
         res.render('users/friends.ejs', { friends })
     }
@@ -90,8 +117,14 @@ const friends = async (req, res) => {
 const removeFriend = async (req, res) => {
     try {
         const user = await User.findById(req.params.id)
+        const friend = await User.findById(req.params.friendId)
+        if (!user || !friend) {
+            return res.redirect("/users")
+        }
         user.friends.pull(req.params.friendId)
         await user.save();
+        friend.friends.pull(user._id)
+        await friend.save()
         res.redirect(`users/${user._id}/friends`)
 
     }
@@ -105,5 +138,5 @@ const removeFriend = async (req, res) => {
 
 
 module.exports = {
-    index, show, edit, update, watchlist, removeFromWatchlist, addToWatchlist, friends, removeFriend
+    index, search, show, edit, update, watchlist, removeFromWatchlist, addToWatchlist, friends, removeFriend
 }

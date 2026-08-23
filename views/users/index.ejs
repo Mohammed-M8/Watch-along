@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script>const currentUserId = "<%= user._id %>"</script>
+    <script defer src="/scripts/userSearch.js"></script>
+    <title>Users</title>
+</head>
+
+<body>
+    <%- include('../partials/_navbar.ejs') %>
+        <h1>Find Users</h1>
+        <label for="search">
+            <i class="fa fa-search"></i><input type="search" name="search" id="searchBar">
+        </label>
+        <div class="outline" id="usersContainer">
+            <% users.forEach(u=>{
+                if(u._id.toString()!==user._id.toString()){%>
+                <div class="card">
+                    <a href="users/<%=u._id%>">
+                        <%=u.username%>
+                    </a>
+                </div>
+                <%} })%>
+        </div>
+</body>
+
+</html>

@@ -1,10 +1,12 @@
 const FriendRequest = require('../models/friendrequests')
 const User = require('../models/user')
+
+
 const index = async (req, res) => {
     try {
         const id = req.session.user._id
-        const sent = await FriendRequest.find({ requester: id })
-        const received = await FriendRequest.find({ recipient: id })
+        const sent = await FriendRequest.find({ requester: id, status: 'pending' }).populate('recipient')
+        const received = await FriendRequest.find({ recipient: id, status: 'pending' }).populate('requester')
         res.render("requests/index.ejs", { sent, received })
     } catch (error) {
         console.log(error)
@@ -19,9 +21,11 @@ const newRequest = (req, res) => {
 const create = async (req, res) => {
     try {
         const formData = req.body
-        formData.requester = req.session.user
+        if (formData.recipient.toString() === req.session.user._id) return res.redirect("/")
+        formData.requester = req.session.user._id
+        formData.status = 'pending'
         await FriendRequest.create(formData);
-        res.redirect("/requests")
+        res.redirect(`/users/${formData.recipient}`)
     } catch (error) {
         console.log(error)
         res.redirect("/")

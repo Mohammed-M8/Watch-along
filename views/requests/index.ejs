@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Requests</title>
+</head>
+
+<body>
+    <%- include('../partials/_navbar.ejs') %>
+        <h1>
+            Requests
+        </h1>
+        <div class="incoming">
+            Incoming
+            <br>
+            <% if(received.length>0){
+                received.forEach(r=>{%>
+                <div class="card">
+                    from <%=r.requester.username%>
+                        status:<%=r.status%>
+                            <form action="/requests/<%=r._id%>?_method=PATCH" method="post">
+                                <input type="" hidden value="accept" name="action">
+                                <button type="submit">Accept</button>
+                            </form>
+                            <form action="/requests/<%=r._id%>?_method=PATCH" method="post">
+                                <input type="" hidden value="decline" name="action">
+                                <button type="submit">Decline</button>
+                            </form>
+
+                </div>
+                <%}) }else{%>
+                    <p>No incoming requests</p>
+                    <%}%>
+        </div>
+        <div class="sent">
+            Sent
+            <br>
+            <% if(sent.length>0){
+                sent.forEach(s=>{%>
+                <div class="card">
+
+                    to <%=s.recipient.username%>
+                        status:<%=s.status%>
+                            <form action="/requests/<%=s._id%>?_method=DELETE"><button type="submit">Cancel</button>
+                            </form>
+                </div>
+                <%}) }else{%>
+                    <p>No sent requests</p>
+                    <%}%>
+        </div>
+</body>
+
+</html>
