@@ -21,7 +21,18 @@ const newRequest = (req, res) => {
 const create = async (req, res) => {
     try {
         const formData = req.body
-        if (formData.recipient.toString() === req.session.user._id) return res.redirect("/")
+        const currentUser = await User.findById(req.session.user._id);
+
+
+        if (formData.recipient.toString() === req.session.user._id.toString()) return res.redirect("/")
+
+        if (currentUser.friends.includes(formData.recipient)) {
+            return res.redirect(`/users/${formData.recipient}`);
+        }
+
+        const exists = await FriendRequest.findOne({ recipient: formData.recipient, requester: req.session.user._id, status: 'pending' })
+        if (exists) return res.redirect(`/users/${formData.recipient}`)
+
         formData.requester = req.session.user._id
         formData.status = 'pending'
         await FriendRequest.create(formData);
@@ -37,18 +48,33 @@ const modifyRequest = async (req, res) => {
         const id = req.params.id
         const formData = req.body;
 
+
         const friendRequest = await FriendRequest.findById(id);
+        if (!friendRequest) return res.redirect("/requests")
+
+        if (friendRequest.status !== 'pending') {
+            return res.redirect("/requests");
+        }
         if (friendRequest.recipient.toString() !== req.session.user._id.toString()) {
             return res.redirect("/requests")
         }
-        if (!friendRequest) return res.redirect("/requests")
         if (formData.action === "accept") {
             friendRequest.status = "accepted"
             const requester = await User.findById(friendRequest.requester)
             const recipient = await User.findById(friendRequest.recipient)
-            requester.friends.push(friendRequest.recipient);
+
+            if (!requester || !recipient) {
+                return res.redirect("/requests")
+            }
+            if (!requester.friends.includes(friendRequest.recipient)) {
+                requester.friends.push(friendRequest.recipient);
+            }
+
+            if (!recipient.friends.includes(friendRequest.requester)) {
+                recipient.friends.push(friendRequest.requester);
+            }
+
             await requester.save();
-            recipient.friends.push(friendRequest.requester);
             await recipient.save();
         }
         else if (formData.action === "decline") {
@@ -72,6 +98,7 @@ const deleteRequest = async (req, res) => {
     try {
         const id = req.params.id
         const request = await FriendRequest.findById(id);
+        if (!request) return res.redirect("/requests")
         if (request.requester.toString() !== req.session.user._id.toString()) {
             return res.redirect("/requests")
         }

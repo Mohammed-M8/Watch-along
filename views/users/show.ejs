@@ -16,10 +16,23 @@
         </h1>
         <div class="outline">
             <%=userObject.username%>
-                <form action="/requests" method="post">
-                    <input type="text" name="recipient" value="<%=userObject._id%>" hidden>
-                    <button type="submit">Send Friend Request</button>
-                </form>
+                <% if (!isFriend && (status!=='pending' )) { %>
+
+                    <form action="/requests" method="post">
+                        <input type="hidden" name="recipient" value="<%= userObject._id %>">
+                        <button type="submit">Send Friend Request</button>
+                    </form>
+
+                    <% } else if (status==='pending' ) { %>
+
+                        <p>Request is Pending</p>
+
+                        <% } else if (isFriend) { %>
+
+                            <form action="/users/<%=user._id%>/friends/<%=userObject._id%>?_method=DELETE"
+                                method="post"><button type="submit">Remove X</button></form>
+
+                            <% } %>
         </div>
 </body>
 

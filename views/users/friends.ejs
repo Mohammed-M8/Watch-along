@@ -14,10 +14,12 @@
         <h1>
             Friends List
         </h1>
+        <a href="/requests">View Requests</a>
         <%if(friends.length===0){%>
             <p>Empty List</p>
             <%}else{ friends.forEach(f=>{%>
                 <%=f.username%>
+                <form action="/users/<%=user._id%>/friends/<%=f._id%>?_method=DELETE" method="post"><button type="submit">Remove X</button></form>
                     <%}) }%>
 
 </body>

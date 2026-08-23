@@ -9,6 +9,7 @@
 
 <body>
     <%- include('../partials/_navbar.ejs') %>
+        <a href="/users">Lookup Users</a>
         <h1>
             Requests
         </h1>
@@ -43,7 +44,8 @@
 
                     to <%=s.recipient.username%>
                         status:<%=s.status%>
-                            <form action="/requests/<%=s._id%>?_method=DELETE"><button type="submit">Cancel</button>
+                            <form action="/requests/<%=s._id%>?_method=DELETE" method="post"><button
+                                    type="submit">Cancel</button>
                             </form>
                 </div>
                 <%}) }else{%>

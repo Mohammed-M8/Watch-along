@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script defer src="/scripts/showsSearch.js"></script>
+    <title>Browse Shows</title>
+</head>
+
+<body>
+    <%- include('../partials/_navbar.ejs') %>
+
+        <input class="search" id="showSearch" type="search" placeholder="search...">
+        <div class="shows" id="showsContainer">
+            <%shows.forEach(s=>{%>
+                <br>
+                <div class="show">
+                    <a href="/shows/<%=s.id%>">
+                        <img src="<%=s.image.medium%>">
+                        <%=s.name%>
+
+                    </a>
+                </div>
+
+                <%})%>
+        </div>
+</body>
+
+</html>

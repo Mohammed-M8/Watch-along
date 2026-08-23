@@ -1,5 +1,6 @@
 
 const User = require('../models/user')
+const FriendRequest = require('../models/friendrequests')
 
 const index = async (req, res) => {
     try {
@@ -40,7 +41,20 @@ const search = async (req, res) => {
 const show = async (req, res) => {
     try {
         const userObject = await User.findById(req.params.id)
-        res.render('users/show.ejs', { userObject })
+        if (!userObject) return res.redirect('/');
+        const sessionUser = req.session.user;
+        if (userObject._id.toString() === sessionUser._id.toString()) return res.render('users/profile.ejs')
+        const user = await User.findById(sessionUser._id)
+        let isFriend = user.friends.some(u => u.toString() === userObject._id.toString())
+        let status = null;
+        const Requested = await FriendRequest.findOne({
+            requester: user._id,
+            recipient: userObject._id
+        })
+        if (Requested) {
+            status = Requested.status;
+        }
+        res.render('users/show.ejs', { userObject, isFriend, status })
     } catch (error) {
         console.log(error)
         res.redirect("/")
@@ -50,6 +64,7 @@ const show = async (req, res) => {
 const edit = async (req, res) => {
     try {
         const user = await User.findById(req.params.id)
+        if (user._id.toString() !== req.session.user._id.toString()) return res.redirect("/")
         res.render("users/edit.ejs", { user })
     } catch (error) {
         console.log(error)
@@ -83,7 +98,7 @@ const removeFromWatchlist = async (req, res) => {
         const user = await User.findById(req.params.id)
         user.watchlist.pull(req.params.showId)
         await user.save()
-        res.redirect("users/watchlist")
+        res.redirect("/users/watchlist")
     } catch (error) {
         console.log(error)
         res.redirect("/")
@@ -94,7 +109,7 @@ const addToWatchlist = async (req, res) => {
         const user = await User.findById(req.params.id)
         user.watchlist.push(req.params.showId)
         await user.save()
-        res.redirect("users/watchlist")
+        res.redirect("/users/watchlist")
     }
     catch (error) {
         console.log(error)
@@ -125,7 +140,7 @@ const removeFriend = async (req, res) => {
         await user.save();
         friend.friends.pull(user._id)
         await friend.save()
-        res.redirect(`users/${user._id}/friends`)
+        res.redirect(`/users/${user._id}/friends`)
 
     }
     catch (error) {
