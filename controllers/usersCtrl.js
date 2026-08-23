@@ -55,7 +55,7 @@ const watchlist = async (req, res) => {
 const removeFromWatchlist = async (req, res) => {
     try {
         const user = await User.findById(req.params.id)
-        user.watchlist.id(req.params.showId).deleteOne()
+        user.watchlist.pull(req.params.showId)
         await user.save()
         res.redirect("users/watchlist")
     } catch (error) {
@@ -90,7 +90,7 @@ const friends = async (req, res) => {
 const removeFriend = async (req, res) => {
     try {
         const user = await User.findById(req.params.id)
-        user.friends.id(req.params.friendId).deleteOne();
+        user.friends.pull(req.params.friendId)
         await user.save();
         res.redirect(`users/${user._id}/friends`)
 

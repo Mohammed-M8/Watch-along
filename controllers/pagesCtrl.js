@@ -3,5 +3,5 @@ const home = async (req, res) => {
 };
 
 module.exports = {
-  home,
+  home
 };
