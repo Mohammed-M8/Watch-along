@@ -4,6 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/stylesheets/style.css" />
+
+    <link rel="stylesheet" href="/stylesheets/partials.css">
     <title>
         Friends
     </title>
@@ -11,7 +14,7 @@
 
 <body>
     <%- include('../partials/_navbar.ejs') %>
-        <h1>
+<main>        <h1>
             Friends List
         </h1>
         <a href="/requests">View Requests</a>
@@ -22,6 +25,7 @@
                 <form action="/users/<%=user._id%>/friends/<%=f._id%>?_method=DELETE" method="post"><button type="submit">Remove X</button></form>
                     <%}) }%>
 
+</main>
 </body>
 
 </html>

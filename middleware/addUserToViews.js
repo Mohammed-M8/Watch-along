@@ -5,6 +5,7 @@ const addUserToViews = (req, res, next) => {
   } else {
     res.locals.user = null;
   }
+  res.locals.currentPath = req.path;
 
   next();
 };

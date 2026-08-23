@@ -5,6 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/stylesheets/style.css" />
+
+    <link rel="stylesheet" href="/stylesheets/partials.css">
     <script>const currentUserId = "<%= user._id %>"</script>
     <script defer src="/scripts/userSearch.js"></script>
     <title>Users</title>
@@ -12,7 +15,7 @@
 
 <body>
     <%- include('../partials/_navbar.ejs') %>
-        <h1>Find Users</h1>
+<main>        <h1>Find Users</h1>
         <label for="search">
             <i class="fa fa-search"></i><input type="search" name="search" id="searchBar">
         </label>
@@ -26,6 +29,7 @@
                 </div>
                 <%} })%>
         </div>
+</main>
 </body>
 
 </html>
