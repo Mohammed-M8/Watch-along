@@ -43,18 +43,21 @@ const show = async (req, res) => {
         const userObject = await User.findById(req.params.id)
         if (!userObject) return res.redirect('/');
         const sessionUser = req.session.user;
-        if (userObject._id.toString() === sessionUser._id.toString()) return res.render('users/profile.ejs')
+        if (userObject._id.toString() === sessionUser._id.toString()) return res.render('users/profile.ejs', { user: userObject })
         const user = await User.findById(sessionUser._id)
         let isFriend = user.friends.some(u => u.toString() === userObject._id.toString())
         let status = null;
         const Requested = await FriendRequest.findOne({
             requester: user._id,
-            recipient: userObject._id
+            recipient: userObject._id,
+            status: 'pending'
         })
         if (Requested) {
             status = Requested.status;
         }
-        res.render('users/show.ejs', { userObject, isFriend, status })
+
+        const friendCount = userObject.friends.length
+        res.render('users/show.ejs', { userObject, isFriend, status, friendCount })
     } catch (error) {
         console.log(error)
         res.redirect("/")

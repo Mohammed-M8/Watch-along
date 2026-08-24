@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link rel="stylesheet" href="/stylesheets/style.css" />
 
     <link rel="stylesheet" href="/stylesheets/partials.css">
     <title>
@@ -14,29 +14,43 @@
 
 <body>
     <%- include('../partials/_navbar.ejs') %>
-<main>
+        <main>
 
-        <div class="show-container">
-            <h1>
-                <%=showObject.name%>
+            <div class="show-container">
+                <div class="heading">
+                    <h1>
+                        <%=showObject.name%>
 
-            </h1>
-            <img src="<%=showObject.image.medium%>">
-            <h2>
-                <%=showObject.type%>
-            </h2>
-            <%showObject.genres.forEach(s=>{%>
-
-                <div class="genre">
-                    <%=s%>
+                    </h1>
                 </div>
-                <%})%>
-        </div>
-        <div class="watchalong-container">
-            <h3>Watchalongs</h3>
-            <p>No watchalongs</p>
-        </div>
-</main>
+                <div class="show-info">
+                    <img src="<%=showObject.image.medium%>">
+                    <div class="show-description">
+                        <p><%-showObject.summary%></p>
+                        <h3>Genres:</h3>
+                        <%showObject.genres.forEach(s=>{%>
+
+                            <div class="genre">
+                                <%=s%>
+                            </div>
+                            <%})%>
+                    </div>
+                </div>
+            </div>
+            <div class="watchalong-container">
+                <h3>Watchalongs</h3>
+                <%if(watchalongs.length>0){
+
+                    watchalongs.forEach(w=>{
+                    %>
+                    <%=w.scheduledAt%>
+
+                        <%})%>
+                            <%}else{%>
+                                <p>No watchalongs</p>
+                                <%}%>
+            </div>
+        </main>
 </body>
 
 </html>

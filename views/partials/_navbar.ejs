@@ -1,15 +1,26 @@
 <nav id="navbar">
   <% if (user) { %>
-  <a class="nav-link" href="/auth/sign-out">Sign Out</a>
-  <a class="nav-link" href="/users/<%=user._id%>/friends">View Friends</a>
-  <a class="nav-link" href="/users/<%=user._id%>/watchlist">Watchlist</a>
-  <a class="nav-link" href="/watchalongs">Watchalongs</a>
-  <a class="nav-link" href="/shows">Browse Shows</a>
-  <a class="nav-link" href="/users/<%=user._id%>">Profile</a>
-  
 
-  <% } else { %>
-  <a class="nav-link" href="/auth/sign-up">Sign Up</a>
-  <a class="nav-link" href="/auth/sign-in">Sign In</a>
-  <% } %>
+    <a href="/" class="logo">Watch-along</a>
+    <div class="site-links">
+      <a class="nav-link" href="/users/<%=user._id%>/friends">View Friends</a>
+      <a class="nav-link" href="/users/<%=user._id%>/watchlist">Watchlist</a>
+      <a class="nav-link" href="/watchalongs">Watchalongs</a>
+      <a class="nav-link" href="/shows">Browse Shows</a>
+    </div>
+    <div class="common-links">
+      <a class="nav-link" href="/users/<%=user._id%>">Profile</a>
+      <a class="nav-link" href="/auth/sign-out">Sign Out</a>
+    </div>
+
+    <% } else { %>
+      <div class="navContainer">
+        <a href="/" class="logo">Watch-along</a>
+        <div class="common-links">
+
+          <a class="nav-link" href="/auth/sign-up">Sign Up</a>
+          <a class="nav-link" href="/auth/sign-in">Sign In</a>
+        </div>
+      </div>
+      <% } %>
 </nav>

@@ -17,6 +17,161 @@ body {
 
 }
 
-main{
+main {
   margin: 8px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 95vw;
+
+}
+
+.friends-list {
+  display: flex;
+  flex-direction: column;
+
+}
+
+.friend {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-image: linear-gradient(to top, rgb(90, 32, 32), rgb(239, 156, 83));
+  padding: 20px;
+  border-radius: 4px;
+  color: white;
+}
+
+.friends-actions {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
+}
+
+.friends-actions>a {
+  color: white
+}
+
+.button-common {
+  background-color: rgb(90, 32, 32);
+}
+
+.green,
+.red,
+.button-common {
+  border-radius: 4px;
+  border-width: 0px;
+  padding: 10px;
+  cursor: pointer;
+  color: white;
+}
+
+.green {
+  background-color: green;
+}
+
+.red {
+  background-color: red;
+}
+
+.heading {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.outline {
+  background-image: linear-gradient(to top, rgb(90, 32, 32), rgb(239, 156, 83));
+  border-width: 0px;
+  border-radius: 4px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 8px;
+}
+
+.card {
+  background-color: white;
+  border-radius: 4px;
+  color: #000;
+  padding: 8px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+}
+
+.request-info,
+.request-actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 2px;
+}
+
+.search {
+  border-radius: 4px;
+  border-width: 1px;
+}
+
+.shows {
+  padding: 8px;
+  background-image: linear-gradient(to top, rgb(90, 32, 32), rgb(239, 156, 83));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 20px;
+  border-radius: 4px;
+}
+
+.show {
+  width: 180px;
+}
+
+.show>a {
+  text-decoration: none;
+  font-weight: 900;
+}
+
+.show img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 4px;
+}
+
+.show-info {
+  background-image: linear-gradient(to top, rgb(90, 32, 32), rgb(239, 156, 83));
+  padding: 8px;
+  border-radius: 4px;
+  color: white;
+  display: flex;
+  flex-direction: row;
+}
+
+.show-info>img{
+  border-radius: 4px;
+}
+
+.show-description{
+  margin: 8px;
+
+}
+
+.genre{
+  background-color: black;
+  margin: 2px;
+  border-radius: 4px;;
+  padding: 4px;
+  width: 14vw;
 }

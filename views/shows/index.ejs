@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script defer src="/scripts/showsSearch.js"></script>
-        <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link rel="stylesheet" href="/stylesheets/style.css" />
 
     <link rel="stylesheet" href="/stylesheets/partials.css">
     <title>Browse Shows</title>
@@ -13,22 +13,24 @@
 
 <body>
     <%- include('../partials/_navbar.ejs') %>
-<main>
-        <input class="search" id="showSearch" type="search" placeholder="search...">
-        <div class="shows" id="showsContainer">
-            <%shows.forEach(s=>{%>
-                <br>
-                <div class="show">
-                    <a href="/shows/<%=s.id%>">
-                        <img src="<%=s.image.medium%>">
-                        <%=s.name%>
+        <main>
+            <div class="heading">
+                <h1>Search Shows</h1>
+                <input class="search" id="showSearch" type="search" placeholder="search...">
+            </div>
+            <div class="shows" id="showsContainer">
+                <%shows.forEach(s=>{%>
+                    <div class="show">
+                        <a class="" href="/shows/<%=s.id%>">
+                            <img src="<%=s.image.medium%>">
+                            <%=s.name%>
 
-                    </a>
-                </div>
+                        </a>
+                    </div>
 
-                <%})%>
-        </div>
-</main>
+                    <%})%>
+            </div>
+        </main>
 </body>
 
 </html>

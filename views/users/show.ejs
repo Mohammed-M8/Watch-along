@@ -14,30 +14,40 @@
 
 <body>
     <%- include('../partials/_navbar.ejs') %>
-<main>        <h1>
-            <%=userObject.username%>'s page
-        </h1>
-        <div class="outline">
-            <%=userObject.username%>
-                <% if (!isFriend && (status!=='pending' )) { %>
+        <main>
+            <div class="heading">
+                <h1>
+                    <%=userObject.username%>'s page
+                </h1>
+            </div>
+            <div class="outline">
+                <div class="info">
+                    <%=userObject.username%>
+                        <% if (!isFriend && (status!=='pending' )) { %>
 
-                    <form action="/requests" method="post">
-                        <input type="hidden" name="recipient" value="<%= userObject._id %>">
-                        <button type="submit">Send Friend Request</button>
-                    </form>
+                            <form action="/requests" method="post">
+                                <input type="hidden" name="recipient" value="<%= userObject._id %>">
+                                <button type="submit" class="button-common">Send Friend Request</button>
+                            </form>
 
-                    <% } else if (status==='pending' ) { %>
+                            <% } else if (status==='pending' ) { %>
 
-                        <p>Request is Pending</p>
+                                <form action="/requests/<%=userObject._id%>?_method=DELETE" method="post"><button
+                                        type="submit" class="button-common">Cancel Request</button>
+                                </form>
 
-                        <% } else if (isFriend) { %>
+                                <% } else if (isFriend) { %>
 
-                            <form action="/users/<%=user._id%>/friends/<%=userObject._id%>?_method=DELETE"
-                                method="post"><button type="submit">Remove X</button></form>
+                                    <form action="/users/<%=user._id%>/friends/<%=userObject._id%>?_method=DELETE"
+                                        method="post">
+                                        <button type="submit" class="button-common">Remove Friend</button>
+                                    </form>
 
-                            <% } %>
-        </div>
-</main>
+                                    <% } %>
+                </div>
+                <%=friendCount%> friends
+            </div>
+        </main>
 </body>
 
 </html>

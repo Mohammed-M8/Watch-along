@@ -7,19 +7,24 @@ const query = () => {
     fetch(`/users/search?search=${encodeURIComponent(search)}`)
         .then(res => res.json())
         .then(users => {
-            usersContainer.innerHTML = "";
 
-            users.forEach(u => {
-                if (u._id !== currentUserId) {
-                    usersContainer.innerHTML += `
+            if (users.length > 0) {
+                usersContainer.innerHTML = "";
+                users.forEach(u => {
+                    if (u._id !== currentUserId) {
+                        usersContainer.innerHTML += `
                  <div class="card">
                     <a href="/users/${u._id}">
                         ${u.username}
                     </a>
                 </div>`
-                }
+                    }
 
-            });
+                });
+            } else {
+                usersContainer.innerHTML = "No results";
+            }
+
         }).catch(error => {
             console.log(error)
 

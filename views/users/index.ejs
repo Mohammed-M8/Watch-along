@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link rel="stylesheet" href="/stylesheets/style.css" />
 
     <link rel="stylesheet" href="/stylesheets/partials.css">
     <script>const currentUserId = "<%= user._id %>"</script>
@@ -15,21 +15,26 @@
 
 <body>
     <%- include('../partials/_navbar.ejs') %>
-<main>        <h1>Find Users</h1>
-        <label for="search">
-            <i class="fa fa-search"></i><input type="search" name="search" id="searchBar">
-        </label>
-        <div class="outline" id="usersContainer">
-            <% users.forEach(u=>{
-                if(u._id.toString()!==user._id.toString()){%>
-                <div class="card">
-                    <a href="users/<%=u._id%>">
+        <main>
+            <div class="heading">
+                <h1>Find Users</h1>
+                <label for="search">
+                    <input class="search" type="search" name="search" id="searchBar"><i class="fa fa-search"></i>
+                </label>
+            </div>
+            <div class="outline" id="usersContainer">
+                <% users.forEach(u=>{
+                    if(u._id.toString()!==user._id.toString()){%>
+                    <div class="card">
                         <%=u.username%>
-                    </a>
-                </div>
-                <%} })%>
-        </div>
-</main>
+
+                            <a href="users/<%=u._id%>">
+                                <button class="button-common">View</button>
+                            </a>
+                    </div>
+                    <%} })%>
+            </div>
+        </main>
 </body>
 
 </html>
