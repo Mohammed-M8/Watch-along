@@ -2,8 +2,25 @@ const Watchalong = require('../models/watchalong')
 const User = require('../models/user')
 const index = async (req, res) => {
     try {
-        const watchalongs = await Watchalong.find();
-        res.render("watchalongs/index.ejs", { watchalongs })
+        const id = req.session.user._id
+        const hosted = await Watchalong.find({ host: id })
+            .populate('participants')
+            .populate('invitedUsers');
+
+        const added = await Watchalong.find({ participants: id })
+            .populate('host')
+            .populate('participants');
+        res.render("watchalongs/index.ejs", { hosted, added })
+    } catch (error) {
+        console.log(error)
+        res.redirect("/")
+    }
+}
+
+const watchalongInvites = async (req, res) => {
+    try {
+        const watchalongs = await Watchalong.find({ invitedUsers: req.session.user._id })
+        res.render("watchalongs/invites.ejs", { watchalongs })
     } catch (error) {
         console.log(error)
         res.redirect("/")
@@ -22,9 +39,19 @@ const show = async (req, res) => {
 
 const newWatchalong = async (req, res) => {
     try {
-        const user = await User.findById(req.session.user._id)
+        const user = await User.findById(req.session.user._id).populate('friends')
+        const showId = req.params.showId;
+        const show = await fetch(`https://api.tvmaze.com/shows/${showId}`).then(res => res.json())
         const friends = user.friends;
-        res.render("watchalongs/new.ejs", { friends })
+        const seasons = await fetch(`https://api.tvmaze.com/shows/${showId}/seasons`).then(res => res.json());
+
+
+        res.render("watchalongs/new.ejs", {
+            friends,
+            showId,
+            show,
+            seasons
+        });
     } catch (error) {
         console.log(error)
         res.redirect("/")
@@ -34,14 +61,31 @@ const newWatchalong = async (req, res) => {
 const create = async (req, res) => {
     try {
         const formData = req.body;
-        formData.host = req.session.user
-        await Watchalong.create(formData)
-        res.redirect("/watchalongs")
+        const scheduledAt = new Date(formData.scheduledAt);
+
+        if (scheduledAt < new Date()) {
+            return res.redirect(`/watchalongs/new/${formData.showId}`);
+        }
+
+        if (!formData.invitedUsers || formData.invitedUsers.length === 0) {
+            return res.redirect(`/watchalongs/new/${formData.showId}`);
+        }
+
+        const showData = await fetch(`https://api.tvmaze.com/shows/${formData.showId}`)
+            .then(res => res.json());
+
+        formData.showName = showData.name;
+        formData.showImage = showData.image ? showData.image.medium : null;
+        formData.participants = [];
+        formData.host = req.session.user._id;
+
+        await Watchalong.create(formData);
+        res.redirect("/watchalongs");
     } catch (error) {
-        console.log(error)
-        res.redirect("/")
+        console.log(error);
+        res.redirect("/");
     }
-}
+};
 
 const edit = async (req, res) => {
     try {
@@ -109,7 +153,7 @@ const deleteWatchalong = async (req, res) => {
 }
 
 module.exports = {
-    index, show, new: newWatchalong, create, edit, update, updateInvite, delete: deleteWatchalong
+    index, show, new: newWatchalong, create, edit, update, updateInvite, delete: deleteWatchalong, watchalongInvites
 }
 
 

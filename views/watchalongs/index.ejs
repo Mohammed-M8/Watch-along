@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link rel="stylesheet" href="/stylesheets/style.css" />
 
     <link rel="stylesheet" href="/stylesheets/partials.css">
     <title>My Watchalongs</title>
@@ -12,9 +12,93 @@
 
 <body>
     <%- include('../partials/_navbar.ejs') %>
-<main>
-        Watchalongs
-</main>
+        <main>
+            <div class="heading">
+                <h1>
+                    Watchalongs Scheduled
+                </h1>
+                <a href="/shows"><button type="button" class="button-common">Browse Shows</button></a>
+            </div>
+            <div class="outline">
+                <div class="heading">
+                    <h2>Hosted Watchalongs</h2>
+                    <a href="/shows"><button type="button" class="button-common">Create Watchalong</button></a>
+                </div>
+                <div class="hosted">
+
+                    <%if(hosted.length>0){%>
+                        <%hosted.forEach(h=>{%>
+                            <div class="watchalong">
+                                <a href="/shows/<%=h.showId%>">
+                                    <img src="<%=h.showImage%>" alt="<%=h.showName%> image">
+                                    <h3>
+                                        <%=h.showName%>
+                                    </h3>
+                                </a>
+                                <div class="watchalong-info">
+                                    <p>Season <%=h.season%>, Episode(s): <%=h.episodes.join(", ")%></p>
+                                <p><%=new Date(h.scheduledAt).toLocaleString()%></p>
+                                <p>Participants:
+                                    <%if(h.participants.length>0){%>
+                                        <%const names=h.participants.map(p=>p.username); %>
+                                            <%if(names.length<=2){%>
+                                                <%=names.join(" , ")%>
+                                                    <%}else{%>
+                                                        <%=names.slice(0,2).join(" , ")%> and <%=names.length-2%> others
+                                                            <%}%>
+                                                                <%}else{%>
+                                                                    None yet
+                                                                    <%}%>
+                                </p>
+                                </div>
+                            </div>
+                            <%})%>
+                                <%}else{%>
+                                    <p>No watchalongs hosted.</p>
+                                    <%}%>
+                </div>
+                                            <div class=" heading">
+                                                <h2>Participated Watchalongs</h2>
+                                                <a href="/watchalongs/invites"><button type="button"
+                                                        class="button-light">View
+                                                        Invites</button></a>
+                                </div>
+                                <div class=" added">
+
+                                    <%if(added.length>0){%>
+                                        <%added.forEach(a=>{%>
+                                            <div class="watchalong">
+                                                <a href="/shows/<%=a.showId%>">
+                                                    <img src="<%=a.showImage%>" alt="<%=a.showName%> image">
+                                                    <h3>
+                                                        <%=a.showName%>
+                                                    </h3>
+                                                </a>
+                                                <div class="watchalong-info">
+                                                    <p>Season <%=a.season%>, Episode(s): <%=a.episodes.join(", ")%></p>
+                                <p><%=new Date(a.scheduledAt).toLocaleString()%></p>
+                                <p>Participants:
+                                    <%if(a.participants.length>0){%>
+                                        <%const names=a.participants.map(p=>p.username); %>
+                                            <%if(names.length<=2){%>
+                                                <%=names.join(" , ")%>
+                                                    <%}else{%>
+                                                        <%=names.slice(0,2).join(" , ")%> and <%=names.length-2%> others
+                                                            <%}%>
+                                                                <%}else{%>
+                                                                    None yet
+                                                                    <%}%>
+                                </p>
+                                </div>
+                            </div>
+                            <%})%>
+                                <%}else{%>
+                                    <p>No watchalongs added to.</p>
+                                    <%}%>
+                </div>
+
+            </div>
+        </main>
 </body>
 
 </html>

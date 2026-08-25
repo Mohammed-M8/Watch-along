@@ -3,8 +3,9 @@ const router = express.Router();
 const watchalongCtrl = require('../controllers/watchalongCtrl')
 
 router.get('/', watchalongCtrl.index)
+router.get('/invites', watchalongCtrl.watchalongInvites)
+router.get('/new/:showId', watchalongCtrl.new)
 router.get('/:id', watchalongCtrl.show)
-router.get('/new', watchalongCtrl.new)
 router.post('/', watchalongCtrl.create)
 router.get('/:id/edit', watchalongCtrl.edit)
 router.put('/:id', watchalongCtrl.update)

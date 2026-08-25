@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+
+    <link rel="stylesheet" href="/stylesheets/partials.css">
+    <script defer src="/scripts/episodeDisplay.js"></script>
+    <title>Create Watchalong</title>
+</head>
+
+<body>
+    <%- include('../partials/_navbar.ejs') %>
+        <main>
+            <div class="heading">
+                <h1>Create Watchalong for: <%=show.name%>
+                </h1>
+            </div>
+            <div class="outline">
+                <%if(friends.length>0){%>
+                    <form action="/watchalongs" method="post">
+                        <h3>Select Friends to Invite</h3>
+                        <%friends.forEach(f=>{%>
+                            <label>
+                                <input type="checkbox" name="invitedUsers[]" value="<%= f._id %>">
+                                <%=f.username%>
+                            </label>
+                            <% }) %>
+                                <input type="hidden" name="showId" value="<%=showId%>">
+                                <h3>Select Season</h3>
+                                <label for="season">Season:</label>
+
+                                <select name="season" id="season" data-show-id="<%= showId %>">
+                                    <option value="" disabled selected>Select a season</option>
+                                    <% seasons.forEach(s=> { %>
+                                        <option value="<%= s.number %>">
+                                            Season <%= s.number %>
+                                        </option>
+                                        <% }) %>
+                                </select>
+                                <h3>Select Episodes</h3>
+                                <div id="episodesContainer">
+                                    Select Season to get Episodes
+                                </div>
+                                <h3>Select Date and Time</h3>
+                                <input type="datetime-local" name="scheduledAt">
+
+                                <button class="button-light" type="submit">Create Watchalong</button>
+                    </form>
+                    <%}else{%>
+                        <div style="display: flex;flex-direction: row;align-items: center;gap: 20px;">
+                            <p>Add Friends to create Watchalongs :)</p>
+                            <a href="/users"><button class="button-common" type="button">Lookup
+                                    Users</button></a>
+                        </div>
+                        <%}%>
+            </div>
+        </main>
+</body>
+
+</html>

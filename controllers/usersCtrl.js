@@ -88,6 +88,9 @@ const update = async (req, res) => {
 
 const watchlist = async (req, res) => {
     try {
+        if (req.params.id !== req.session.user._id.toString()) {
+            return res.redirect("/");
+        }
         const user = await User.findById(req.params.id)
         const watchlist = user.watchlist;
         res.render("users/watchlist.ejs", { watchlist })
@@ -98,23 +101,50 @@ const watchlist = async (req, res) => {
 }
 const removeFromWatchlist = async (req, res) => {
     try {
+        if (req.params.id !== req.session.user._id.toString()) {
+            return res.redirect("/");
+        }
         const user = await User.findById(req.params.id)
-        user.watchlist.pull(req.params.showId)
+
+        user.watchlist = user.watchlist.filter(
+            show => show.showId.toString() !== req.params.showId
+        )
+
         await user.save()
-        res.redirect("/users/watchlist")
+
+        res.redirect(`/users/${user._id}/watchlist`)
     } catch (error) {
         console.log(error)
         res.redirect("/")
     }
 }
+
 const addToWatchlist = async (req, res) => {
     try {
-        const user = await User.findById(req.params.id)
-        user.watchlist.push(req.params.showId)
+        const id = req.params.id
+        if (id !== req.session.user._id.toString()) {
+            return res.redirect("/");
+        }
+        const user = await User.findById(id)
+        if (user.watchlist.some(w => w.showId.toString() === req.params.showId)) return res.redirect(`/shows/${req.params.showId}`)
+        const response = await fetch(
+            `https://api.tvmaze.com/shows/${req.params.showId}`
+        )
+
+        const showData = await response.json()
+
+        const show = {
+            showId: showData.id,
+            name: showData.name,
+            image: showData.image ? showData.image.medium : null
+        };
+
+        user.watchlist.push(show)
+
         await user.save()
-        res.redirect("/users/watchlist")
-    }
-    catch (error) {
+
+        res.redirect(`/users/${user._id}/watchlist`)
+    } catch (error) {
         console.log(error)
         res.redirect("/")
     }

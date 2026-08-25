@@ -34,11 +34,33 @@
                                 <%=s%>
                             </div>
                             <%})%>
+                                <% if (inWatchlist) { %>
+
+                                    <form action="/users/<%= user._id %>/watchlist/<%= showObject.id %>?_method=DELETE"
+                                        method="post">
+                                        <button type="submit" class="button-common">
+                                            Remove from Watchlist
+                                        </button>
+                                    </form>
+
+                                    <% } else { %>
+
+                                        <form action="/users/<%=user._id%>/watchlist/<%=showObject.id%>" method="post">
+                                            <button type="submit" class="button-common">
+                                                Add to Watchlist
+                                            </button>
+                                        </form>
+
+                                        <% } %>
                     </div>
                 </div>
             </div>
             <div class="watchalong-container">
-                <h3>Watchalongs</h3>
+                <div class="heading">
+                    <h3>Watchalongs</h3>
+                    <a href="/watchalongs/new/<%=showObject.id%>"><button type="button" class="button-common">Create
+                            Watchalong</button></a>
+                </div>
                 <%if(watchalongs.length>0){
 
                     watchalongs.forEach(w=>{

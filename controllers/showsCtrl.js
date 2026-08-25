@@ -1,4 +1,5 @@
 const Watchalong = require('../models/watchalong')
+const User = require('../models/user')
 
 const index = async (req, res) => {
     try {
@@ -18,6 +19,9 @@ const show = async (req, res) => {
         const id = req.params.id
         const response = await fetch(`https://api.tvmaze.com/shows/${id}`)
         const showObject = await response.json();
+
+        const user = await User.findById(req.session.user._id)
+
         const watchalongs = await Watchalong.find({
             showId: id,
             $or: [
@@ -25,14 +29,20 @@ const show = async (req, res) => {
                 { participants: req.session.user.id }
             ]
         })
-        res.render('shows/show.ejs', { showObject, watchalongs })
+
+        const inWatchlist = user.watchlist.some(w => w.showId.toString() === id)
+
+        res.render('shows/show.ejs', {
+            showObject,
+            watchalongs,
+            inWatchlist
+        })
 
     } catch (error) {
         console.log(error)
         res.redirect("/")
     }
 }
-
 module.exports = {
     index, show
 }

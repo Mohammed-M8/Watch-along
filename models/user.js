@@ -1,5 +1,16 @@
 const mongoose = require('mongoose');
 
+const watchlistSchema=new mongoose.Schema({
+ showId: {
+    type: Number,
+    required: true
+  },
+  name: {
+    type: String,
+    required: true
+  },
+  image: String
+})
 // create the schema
 const userSchema = new mongoose.Schema({
   email: {
@@ -16,9 +27,7 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
 
-  watchlist: {
-    type: [Number]
-  },
+  watchlist: [watchlistSchema],
   friends: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
