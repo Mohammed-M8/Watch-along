@@ -1,5 +1,6 @@
 const Watchalong = require('../models/watchalong')
-const User = require('../models/user')
+const User = require('../models/user');
+const sendWatchalongInviteEmail = require('../services/sendWatchalongInviteEmail');
 const index = async (req, res) => {
     try {
         const id = req.session.user._id
@@ -85,7 +86,18 @@ const create = async (req, res) => {
         formData.participants = [];
         formData.host = req.session.user._id;
 
-        await Watchalong.create(formData);
+        const watchalong = await Watchalong.create(formData);
+
+        const invitedUsersList = Array.isArray(formData.invitedUsers)
+            ? formData.invitedUsers
+            : [formData.invitedUsers];
+
+        const invitedUserDocs = await User.find({ _id: { $in: invitedUsersList } });
+        invitedUserDocs.forEach(u => {
+            sendWatchalongInviteEmail(u, req.session.user, watchalong)
+                .catch(err => console.log('Invite email failed:', err));
+        });
+
         res.redirect("/watchalongs");
     } catch (error) {
         console.log(error);

@@ -1,5 +1,6 @@
 const FriendRequest = require('../models/friendrequests')
 const User = require('../models/user')
+const sendFriendRequestEmail = require('../services/sendFriendRequestEmail')
 
 
 const index = async (req, res) => {
@@ -36,7 +37,11 @@ const create = async (req, res) => {
         formData.requester = req.session.user._id
         formData.status = 'pending'
         await FriendRequest.create(formData);
-        res.redirect(`/users/${formData.recipient}`)
+        const recipientUser = await User.findById(formData.recipient);
+
+        sendFriendRequestEmail(recipientUser, currentUser)
+            .catch(err => console.log('Friend request email failed:', err));
+             res.redirect(`/users/${formData.recipient}`)
     } catch (error) {
         console.log(error)
         res.redirect("/")
