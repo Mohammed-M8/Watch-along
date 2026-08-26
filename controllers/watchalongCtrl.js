@@ -95,7 +95,7 @@ const create = async (req, res) => {
         const invitedUserDocs = await User.find({ _id: { $in: invitedUsersList } });
         invitedUserDocs.forEach(u => {
             sendWatchalongInviteEmail(u, req.session.user, watchalong)
-                .catch(err => console.log('Invite email failed:', err));
+                .catch(err => console.error('Email error:', JSON.stringify(err, null, 2)));
         });
 
         res.redirect("/watchalongs");

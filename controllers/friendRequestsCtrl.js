@@ -40,8 +40,8 @@ const create = async (req, res) => {
         const recipientUser = await User.findById(formData.recipient);
 
         sendFriendRequestEmail(recipientUser, currentUser)
-            .catch(err => console.log('Friend request email failed:', err));
-             res.redirect(`/users/${formData.recipient}`)
+            .catch(err => console.error('Email error:', JSON.stringify(err, null, 2)));
+        res.redirect(`/users/${formData.recipient}`)
     } catch (error) {
         console.log(error)
         res.redirect("/")
