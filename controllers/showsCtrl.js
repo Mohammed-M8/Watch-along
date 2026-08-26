@@ -25,10 +25,10 @@ const show = async (req, res) => {
         const watchalongs = await Watchalong.find({
             showId: id,
             $or: [
-                { host: req.session.user.id },
-                { participants: req.session.user.id }
+                { host: req.session.user._id },
+                { participants: req.session.user._id }
             ]
-        })
+        }).populate('participants').populate('host')
 
         const inWatchlist = user.watchlist.some(w => w.showId.toString() === id)
 

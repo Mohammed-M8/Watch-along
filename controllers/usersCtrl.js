@@ -1,6 +1,7 @@
 
 const User = require('../models/user')
 const FriendRequest = require('../models/friendrequests')
+const Watchalong = require('../models/watchalong')
 
 const index = async (req, res) => {
     try {
@@ -56,8 +57,17 @@ const show = async (req, res) => {
             status = Requested.status;
         }
 
+        const watchalongs = await Watchalong.find({
+            $and: [
+                { $or: [{ host: sessionUser._id }, { participants: sessionUser._id }] },
+                { $or: [{ host: userObject._id }, { participants: userObject._id }] }
+            ]
+        })
+            .populate('host')
+            .populate('participants');
+
         const friendCount = userObject.friends.length
-        res.render('users/show.ejs', { userObject, isFriend, status, friendCount })
+        res.render('users/show.ejs', { userObject, isFriend, status, friendCount, watchalongs })
     } catch (error) {
         console.log(error)
         res.redirect("/")

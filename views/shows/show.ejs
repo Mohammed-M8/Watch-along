@@ -55,23 +55,53 @@
                     </div>
                 </div>
             </div>
-            <div class="watchalong-container">
-                <div class="heading">
-                    <h3>Watchalongs</h3>
-                    <a href="/watchalongs/new/<%=showObject.id%>"><button type="button" class="button-common">Create
-                            Watchalong</button></a>
-                </div>
-                <%if(watchalongs.length>0){
+            <div class="heading">
+                <h2>Watchalongs</h2>
+                <a href="/watchalongs/new/<%=showObject.id%>"><button type="button" class="button-common">Create
+                        Watchalong</button></a>
 
-                    watchalongs.forEach(w=>{
-                    %>
-                    <%=w.scheduledAt%>
-
-                        <%})%>
-                            <%}else{%>
-                                <p>No watchalongs</p>
-                                <%}%>
             </div>
+            <div class="outline">
+                <div class=" watchalongs">
+
+                    <%if(watchalongs.length>0){%>
+                        <%watchalongs.forEach(w=>{%>
+                            <div class="watchalong">
+                                <a class="watchalong-content" href="/shows/<%=w.showId%>">
+                                    <img src="<%=w.showImage%>" alt="<%=w.showName%> image">
+                                    <h3>
+                                        <%=w.showName%>
+                                    </h3>
+                                </a>
+                                <div class="watchalong-info">
+                                    <p>Season <%=w.season%>, Episode(s): <%=w.episodes.join(", ")%></p>
+                                <p><%=new Date(w.scheduledAt).toLocaleString()%></p>
+                                <p>Hosted By:<a href=" /users/<%=w.host._id%>" class="host"><%=w.host.username%></a>
+                                    </p>
+                                    <p>Participants:
+                                        <%if(w.participants.length>0){%>
+                                            <%w.participants.forEach(p=>{%>
+                                                <a href=" /users/<%=p._id%>" class="user">
+                                                    <%=p.username%>
+                                                </a>
+
+                                                <%})%>
+                                                    <%}else{%>
+                                                        None yet
+                                                        <%}%>
+                                    </p>
+                                    <a href="/watchalongs/<%=w._id%>">
+                                        <button type="button" class="button-common">View</button>
+                                    </a>
+                                </div>
+                            </div>
+                            <%})%>
+                                <%}else{%>
+                                    <p>No watchalongs in common</p>
+                                    <%}%>
+                </div>
+            </div>
+
         </main>
 </body>
 

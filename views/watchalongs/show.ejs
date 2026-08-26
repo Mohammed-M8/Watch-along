@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link rel="stylesheet" href="/stylesheets/style.css" />
 
     <link rel="stylesheet" href="/stylesheets/partials.css">
     <title>My Watchalongs</title>
@@ -12,9 +12,123 @@
 
 <body>
     <%- include('../partials/_navbar.ejs') %>
-<main>
-        ShowId:<%=watchalong.showId>
-</main>
+        <main>
+            <div class="heading">
+                <h1>Watchalong Info</h1>
+                <%if(user._id.toString()===watchalong.host._id.toString()){%>
+                    <div style="display: flex;flex-direction: row;gap:20px">
+                        <a href="/watchalongs/<%=watchalong._id%>/edit">
+                            <button type="button" class="button-common">Edit</button>
+                        </a>
+                        <form action="/watchalongs/<%=watchalong._id%>?_method=DELETE" method="post">
+                            <button type="submit" class="red">Delete</button>
+                        </form>
+                    </div>
+                    <%}%>
+            </div>
+            <% const isHost=user._id.toString()===watchalong.host._id.toString(); %>
+                <div class="outline">
+                    <div class="watchalong">
+                        <a class="watchalong-content" href="/shows/<%=watchalong.showId%>">
+                            <img src="<%=watchalong.showImage%>" alt="<%=watchalong.showName%> image">
+                            <h3>
+                                <%=watchalong.showName%>
+                            </h3>
+                        </a>
+                        <div class="watchalong-info">
+                            <p>Season <%=watchalong.season%>, Episode(s): <%=watchalong.episodes.join(", ")%></p>
+                                <p><%=new Date(watchalong.scheduledAt).toLocaleString()%></p>
+                                <p>Hosted By: <a href=" /users/<%=watchalong.host._id%>" class="host">
+                                        <%=watchalong.host.username%></a>
+                            </p>
+                            <p>Participants:
+                                <%if(watchalong.participants.length>0){%>
+                                    <%watchalong.participants.forEach(p=>{%>
+                                        <a href=" /users/<%=p._id%>" class="user">
+                                            <%=p.username%>
+                                        </a>
+
+                                        <%})%>
+                                            <%}else{%>
+                                                None yet
+                                                <%}%>
+                            </p>
+                            <p>Invited:
+                                <%if(watchalong.invitedUsers.length>0){%>
+                                    <%watchalong.invitedUsers.forEach(i=>{%>
+                                        <a href=" /users/<%=i._id%>" class="user">
+                                            <%=i.username%>
+                                        </a>
+                                        <%})%>
+                                            <%}else{%>
+                                                -
+                                                <%}%>
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="heading">
+                    <h2>Episodes</h2>
+                </div>
+                <div class="outline">
+                    <div id="episodesContainer">
+                        <%episodes.forEach(e=>{%>
+                            <div class="episode">
+                                <%=e.number%> - <%=e.name%>
+                                        <img src="<%=e.image.medium%>">
+                            </div>
+                            <%})%>
+                    </div>
+                </div>
+                <div class="heading">
+                    <h2>Participants</h2>
+                </div>
+
+                <div id="usersContainer">
+                    <%if(watchalong.participants.length>0){%>
+                        <%watchalong.participants.forEach(p=>{%>
+                            <div class="friend" style="display:flex;align-items:center;gap:10px">
+                                <a href="/users/<%=p._id%>">
+                                    <%=p.username%>
+                                </a>
+                                <%if(isHost){%>
+                                    <form
+                                        action="/watchalongs/<%=watchalong._id%>/participants/<%=p._id%>/remove?_method=PATCH"
+                                        method="post">
+                                        <button type="submit" class="red">Remove</button>
+                                    </form>
+                                    <%}%>
+                            </div>
+                            <%})%>
+                                <%}else{%>
+                                    <p>No participants yet</p>
+                                    <%}%>
+                </div>
+                <div class="heading">
+                    <h2>Invites</h2>
+                </div>
+                <div id="usersContainer">
+                    <%if(watchalong.invitedUsers.length>0){%>
+                        <%watchalong.invitedUsers.forEach(p=>{%>
+                            <div class="friend" style="display:flex;align-items:center;gap:10px">
+                                <a href="/users/<%=p._id%>">
+                                    <%=p.username%>
+                                </a>
+                                <%if(isHost){%>
+                                    <form
+                                        action="/watchalongs/<%=watchalong._id%>/invitedUsers/<%=p._id%>/remove?_method=PATCH"
+                                        method="post">
+                                        <button type="submit" class="red">Remove</button>
+                                    </form>
+                                    <%}%>
+                            </div>
+                            <%})%>
+                                <%}else{%>
+                                    <p>No invites left</p>
+                                    <%}%>
+                </div>
+        </main>
 </body>
 
 </html>

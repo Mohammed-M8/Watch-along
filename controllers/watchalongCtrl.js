@@ -19,7 +19,7 @@ const index = async (req, res) => {
 
 const watchalongInvites = async (req, res) => {
     try {
-        const watchalongs = await Watchalong.find({ invitedUsers: req.session.user._id })
+        const watchalongs = await Watchalong.find({ invitedUsers: req.session.user._id }).populate('host')
         res.render("watchalongs/invites.ejs", { watchalongs })
     } catch (error) {
         console.log(error)
@@ -29,8 +29,14 @@ const watchalongInvites = async (req, res) => {
 
 const show = async (req, res) => {
     try {
-        const watchalong = await Watchalong.findById(req.params.id);
-        res.render("watchalongs/show.ejs", { watchalong })
+        const watchalong = await Watchalong.findById(req.params.id).populate('host').populate('participants').populate('invitedUsers');
+        let episodes = []
+
+        episodes = await fetch(`https://api.tvmaze.com/shows/${watchalong.showId}/episodes`).then(res => res.json())
+        episodes = episodes.filter(e => watchalong.episodes.some(we => we === e.number) && e.season === watchalong.season)
+
+
+        res.render("watchalongs/show.ejs", { watchalong, episodes })
     } catch (error) {
         console.log(error)
         res.redirect("/")
@@ -90,7 +96,15 @@ const create = async (req, res) => {
 const edit = async (req, res) => {
     try {
         const watchalong = await Watchalong.findById(req.params.id)
-        res.render("watchalongs/edit.ejs", { watchalong })
+
+        const showId = watchalong.showId;
+        const seasons = await fetch(`https://api.tvmaze.com/shows/${showId}/seasons`).then(res => res.json());
+
+        const episodes = await fetch(`https://api.tvmaze.com/shows/${showId}/episodes?specials=false`)
+            .then(res => res.json())
+            .then(eps => eps.filter(e => e.season === watchalong.season && e.number !== null));
+
+        res.render("watchalongs/edit.ejs", { watchalong, showId, seasons, episodes })
     } catch (error) {
         console.log(error)
         res.redirect("/")
@@ -100,7 +114,12 @@ const edit = async (req, res) => {
 const update = async (req, res) => {
     try {
         const watchalong = await Watchalong.findById(req.params.id)
-        watchalong.set(req.body)
+        const formData = req.body;
+
+        formData.episodes = [].concat(formData.episodes || []).map(Number);
+        formData.season = Number(formData.season);
+
+        watchalong.set(formData)
         await watchalong.save();
         res.redirect("/watchalongs")
     } catch (error) {
@@ -152,8 +171,87 @@ const deleteWatchalong = async (req, res) => {
     }
 }
 
+const addInvite = async (req, res) => {
+    try {
+        const watchalong = await Watchalong.findById(req.params.id)
+        if (watchalong.host.toString() !== req.session.user._id.toString()) {
+            return res.redirect(`/watchalongs/${watchalong._id}`)
+        }
+
+        const { userId } = req.params;
+        const alreadyInvited = watchalong.invitedUsers.some(id => id.toString() === userId);
+        const alreadyParticipant = watchalong.participants.some(id => id.toString() === userId);
+
+        if (!alreadyInvited && !alreadyParticipant) {
+            watchalong.invitedUsers.push(userId);
+            await watchalong.save();
+        }
+
+        res.redirect(`/watchalongs/${watchalong._id}`)
+    } catch (error) {
+        console.log(error)
+        res.redirect("/")
+    }
+}
+
+const removeInvite = async (req, res) => {
+    try {
+        const watchalong = await Watchalong.findById(req.params.id)
+        if (watchalong.host.toString() !== req.session.user._id.toString()) {
+            return res.redirect(`/watchalongs/${watchalong._id}`)
+        }
+
+        watchalong.invitedUsers.pull(req.params.userId);
+        await watchalong.save();
+
+        res.redirect(`/watchalongs/${watchalong._id}`)
+    } catch (error) {
+        console.log(error)
+        res.redirect("/")
+    }
+}
+
+const addParticipant = async (req, res) => {
+    try {
+        const watchalong = await Watchalong.findById(req.params.id)
+        if (watchalong.host.toString() !== req.session.user._id.toString()) {
+            return res.redirect(`/watchalongs/${watchalong._id}`)
+        }
+
+        const { userId } = req.params;
+        watchalong.invitedUsers.pull(userId);
+        const alreadyParticipant = watchalong.participants.some(id => id.toString() === userId);
+        if (!alreadyParticipant) {
+            watchalong.participants.push(userId);
+        }
+        await watchalong.save();
+
+        res.redirect(`/watchalongs/${watchalong._id}`)
+    } catch (error) {
+        console.log(error)
+        res.redirect("/")
+    }
+}
+
+const removeParticipant = async (req, res) => {
+    try {
+        const watchalong = await Watchalong.findById(req.params.id)
+        if (watchalong.host.toString() !== req.session.user._id.toString()) {
+            return res.redirect(`/watchalongs/${watchalong._id}`)
+        }
+
+        watchalong.participants.pull(req.params.userId);
+        await watchalong.save();
+
+        res.redirect(`/watchalongs/${watchalong._id}`)
+    } catch (error) {
+        console.log(error)
+        res.redirect("/")
+    }
+}
+
 module.exports = {
-    index, show, new: newWatchalong, create, edit, update, updateInvite, delete: deleteWatchalong, watchalongInvites
+    index, show, new: newWatchalong, create, edit, update, updateInvite, delete: deleteWatchalong, watchalongInvites, addInvite, removeInvite, addParticipant, removeParticipant
 }
 
 

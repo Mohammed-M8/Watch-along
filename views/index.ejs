@@ -14,9 +14,43 @@
     <main>
 
       <% if(user){ %>
-        <h1>Welcome to the app, <%= user.username %>!</h1>
+        <div class="center">
+          <h1>Welcome back, <%= user.username %> 👋</h1>
+          <p>Ready to pick something to watch?</p>
+          <div style="display:flex;flex-direction:row;gap:20px;margin-top:20px;">
+            <a href="/watchalongs"><button type="button" class="button-common">My Watchalongs</button></a>
+            <a href="/shows"><button type="button" class="button-light">Browse Shows</button></a>
+          </div>
+        </div>
         <% }else{ %>
-          <h1>Welcome to the app!</h1>
+          <div class="center">
+            <h1>Welcome to Watch-Along</h1>
+            <p>Pick a show, pick a time, and watch it together — even when you're apart.</p>
+            <div style="display:flex;flex-direction:row;gap:20px;margin-top:20px;">
+              <a href="/auth/sign-up"><button type="button" class="button-common">Get Started</button></a>
+              <a href="/auth/sign-in"><button type="button" class="button-light">Sign In</button></a>
+            </div>
+          </div>
+
+          <div class="outline" style="margin-top:60px;">
+            <div class="heading">
+              <h3>How it works</h3>
+            </div>
+            <div style="display:flex;flex-direction:row;gap:40px;flex-wrap:wrap;justify-content:center;padding:20px 0;">
+              <div style="max-width:220px;text-align:center;">
+                <h3>1. Find a show</h3>
+                <p>Browse and search from thousands of shows.</p>
+              </div>
+              <div style="max-width:220px;text-align:center;">
+                <h3>2. Schedule it</h3>
+                <p>Pick a season, episodes, and a time that works.</p>
+              </div>
+              <div style="max-width:220px;text-align:center;">
+                <h3>3. Invite friends</h3>
+                <p>Bring your friends along and watch in sync.</p>
+              </div>
+            </div>
+          </div>
           <%}%>
     </main>
 

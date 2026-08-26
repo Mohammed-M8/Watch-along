@@ -28,7 +28,7 @@
 
                         <div class="watchalong">
 
-                            <a href="/shows/<%= w.showId %>">
+                            <a class="watchalong-content" href="/shows/<%= w.showId %>">
                                 <img src="<%= w.showImage %>" alt="<%= w.showName %> image">
 
                                 <h3>
@@ -47,9 +47,8 @@
                                     <%= new Date(w.scheduledAt).toLocaleString() %>
                                 </p>
 
-                                <p>
-                                    Hosted by:
-                                    <%= w.host ? w.host.username : " Unknown" %>
+                                <p>Hosted By:<a href=" /users/<%=w.host._id%>"
+                                            class="host"><%=w.host.username%></a>
                                 </p>
 
                                 <div class="watchalong-actions">

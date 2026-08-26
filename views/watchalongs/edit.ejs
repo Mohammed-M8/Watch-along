@@ -7,13 +7,59 @@
     <link rel="stylesheet" href="/stylesheets/style.css" />
 
     <link rel="stylesheet" href="/stylesheets/partials.css">
+    <script defer src="/scripts/episodeDisplay.js"></script>
     <title>Edit Watchalong</title>
 </head>
 
 <body>
     <%- include('../partials/_navbar.ejs') %>
         <main>
-            ShowId:<%=watchalong.showId>
+            <div class="heading">
+                <h1>Edit Watchalong for: <%=watchalong.showName%>
+                </h1>
+            </div>
+            <div class="outline">
+                <form action="/watchalongs/<%=watchalong._id%>?_method=PUT" method="post">
+                    <input type="hidden" name="showId" value="<%=showId%>">
+                    <h3>Select Season</h3>
+                    <label for="season">Season:</label>
+
+                    <select name="season" id="season" data-show-id="<%= showId %>">
+                        <% seasons.forEach(s=> { %>
+                            <option value="<%= s.number %>" <% if(s.number===watchalong.season){ %>
+                                selected <% } %>>
+                                    Season <%= s.number %>
+                            </option>
+                            <% }) %>
+                    </select>
+                    <h3>Select Episodes</h3>
+                    <div id="episodesContainer">
+                        <% episodes.forEach(e=> { %>
+                            <label class="episode">
+                                <div>
+                                    <input type="checkbox" name="episodes[]" value="<%= e.number %>" <%
+                                        if(watchalong.episodes.includes(e.number)){ %> checked <% } %>>
+                                        <%= e.number %> - <%= e.name %>
+                                </div>
+                                <img src="<%= e.image.medium %>">
+                            </label>
+                            <% }) %>
+                    </div>
+                    <h3>Select Date and Time</h3>
+                    <% const d=new Date(watchalong.scheduledAt); const pad=n=> String(n).padStart(2, '0');
+                        const localValue =
+                        `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+                        %>
+                        <input type="datetime-local" name="scheduledAt" value="<%= localValue %>">
+
+                        <div style="display: flex;flex-direction: row;gap:20px">
+                            <button class="button-light" type="submit">Save Changes</button>
+                            <a href="/watchalongs/<%=watchalong._id%>">
+                                <button class="button-common" type="button">Cancel</button>
+                            </a>
+                        </div>
+                </form>
+            </div>
         </main>
 </body>
 

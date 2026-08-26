@@ -16,27 +16,25 @@
 
     <%- include('../partials/_navbar.ejs') %>
 
-    <main>
-        <div class="heading">
-            <h1>
-                <%= user.username %>'s Profile
-            </h1>
-
-            <form action="/users/<%= user._id %>/edit" method="get">
-                <button type="submit" class="button-common">
-                    Edit Profile
-                </button>
-            </form>
-        </div>
-
-        <div class="outline">
-            <div class="info">
-                <p>Username: <%= user.username %></p>
-                <p>Email: <%= user.email %></p>
-                <p><%= user.friends.length %> friends</p>
+        <main>
+            <div class="heading">
+                <h1>
+                    <%= user.username %>'s Profile
+                </h1>
             </div>
-        </div>
-    </main>
+
+            <div class="outline">
+                <div class="info">
+                    <p>Username: <%= user.username %>
+                    </p>
+                    <p>Email: <%= user.email %>
+                    </p>
+                    <p>
+                        <%= user.friends.length %> friends
+                    </p>
+                </div>
+            </div>
+        </main>
 
 </body>
 

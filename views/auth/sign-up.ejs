@@ -12,23 +12,26 @@
 <body>
   <%- include('../partials/_navbar.ejs') %>
     <main>
-      <h1>Create a new account!</h1>
-      <form action="/auth/sign-up" method="POST">
-        <label for="email">Email:</label>
-        <input type="email" name="email" id="email" required />
-        <label for="username">Username:</label>
-        <input type="text" name="username" id="username" required />
+      <div class="heading">
+        <h1>Sign Up</h1>
+      </div>
+      <div class="sign">
+        <form action="/auth/sign-up" method="POST">
+          <label for="email">Email:</label>
+          <input type="email" name="email" id="email" required />
+          <label for="username">Username:</label>
+          <input type="text" name="username" id="username" required />
 
-        <label for="password">Password:</label>
-        <input type="password" name="password" id="password" required />
+          <label for="password">Password:</label>
+          <input type="password" name="password" id="password" required />
 
-        <label for="confirmPassword">Confirm Password:</label>
-        <input type="password" name="confirmPassword" id="confirmPassword" required />
+          <label for="confirmPassword">Confirm Password:</label>
+          <input type="password" name="confirmPassword" id="confirmPassword" required />
 
-        <button type="submit">Sign up</button>
-      </form>
-      <main>
-</main>
+          <button type="submit" class="button-light">Sign up</button>
+        </form>
+      </div>
+    </main>
 </body>
 
 </html>

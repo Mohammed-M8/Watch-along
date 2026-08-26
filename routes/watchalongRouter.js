@@ -10,6 +10,10 @@ router.post('/', watchalongCtrl.create)
 router.get('/:id/edit', watchalongCtrl.edit)
 router.put('/:id', watchalongCtrl.update)
 router.patch('/:id', watchalongCtrl.updateInvite)
+router.patch('/:id/invitedUsers/:userId/add', watchalongCtrl.addInvite)
+router.patch('/:id/invitedUsers/:userId/remove', watchalongCtrl.removeInvite)
+router.patch('/:id/participants/:userId/add', watchalongCtrl.addParticipant)
+router.patch('/:id/participants/:userId/remove', watchalongCtrl.removeParticipant)
 router.delete('/:id', watchalongCtrl.delete)
 
 
