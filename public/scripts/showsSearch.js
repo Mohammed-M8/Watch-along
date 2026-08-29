@@ -18,7 +18,7 @@ const query = () => {
                     </div>
                 `
                 })
-            }).catch(error => )
+            })
     } else {
         fetch('https://api.tvmaze.com/shows')
             .then(res => res.json())
@@ -36,7 +36,6 @@ const query = () => {
                     `;
                 });
             })
-            .catch(error => );
     }
 }
 
