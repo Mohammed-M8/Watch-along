@@ -13,12 +13,12 @@ const query = () => {
  <div class="show">
                     <a href="/shows/${s.show.id}">
                         ${s.show.name}
-                            <img src="${s.show.image.medium}">
+                            <img src="${s.show.image.medium}" alt="${s.show.name}">
                     </a>
                     </div>
                 `
                 })
-            }).catch(error => console.log(error))
+            }).catch(error => )
     } else {
         fetch('https://api.tvmaze.com/shows')
             .then(res => res.json())
@@ -30,13 +30,13 @@ const query = () => {
                         <div class="show">
                             <a href="/shows/${s.id}">
                                 ${s.name}
-                                <img src="${s.image?.medium || ''}">
+                                <img src="${s.image?.medium || ''}" alt="${s.show.name}">
                             </a>
                         </div>
                     `;
                 });
             })
-            .catch(error => console.log(error));
+            .catch(error => );
     }
 }
 

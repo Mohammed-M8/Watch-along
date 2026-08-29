@@ -8,7 +8,6 @@ const index = async (req, res) => {
         res.render('shows/index.ejs', { shows })
 
     } catch (error) {
-        console.log(error)
         res.redirect("/")
     }
 }
@@ -39,7 +38,7 @@ const show = async (req, res) => {
         })
 
     } catch (error) {
-        console.log(error)
+        
         res.redirect("/")
     }
 }

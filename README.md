@@ -6,7 +6,7 @@
 * As a User, i want to have an account i can register and sign up
 * As a User, i want to be a able to add other users as friends
 * As a User, i want to be able to add friends to watchalongs 
-* AS a USer, i want to be able to search shows and create watchalongs with episodes selections
+* AS a User, i want to be able to search shows and create watchalongs with episodes selections
 * As a User, i want to be able to add shows to watchlist so i can view later
 
 
@@ -67,3 +67,38 @@
 |**Show**|
 | GET | `/shows` | Get Shows page |
 | GET | `/shows/:id` | Get specific show page |
+
+## App Screenshots
+Landing Page
+
+![Landing Page](./assets/Landing.png)
+
+Browse Shows
+![Shows Page](./assets/Shows.png)
+
+All Watchalongs
+![Watchalongs](./assets/Watchalongs.png)
+
+
+## Deployed Website
+[Deployed Site](https://watch-along.onrender.com/)
+
+## Attributions
+
+The API used to load Tv Show Data is from TVMaze
+
+[TV Maze API](https://api.tvmaze.com)
+
+## Technologies Used
+
+* Express for the Backend written in JavaScript
+* EJS Template used for the Frontend
+* JavaScript Scripts for pulling data from APIs
+* MongoDB and Mongoose for Database Management
+
+
+## Next Steps
+
+* Add Movies into the mix, to allow variety of watchalong creation
+* Transfer to seperate Mailing Services
+* Allow Reviews on shows as a group from watchalong

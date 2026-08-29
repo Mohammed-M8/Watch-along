@@ -10,7 +10,6 @@ const index = async (req, res) => {
         const received = await FriendRequest.find({ recipient: id, status: 'pending' }).populate('requester')
         res.render("requests/index.ejs", { sent, received })
     } catch (error) {
-        console.log(error)
         res.redirect("/")
     }
 }
@@ -43,7 +42,6 @@ const create = async (req, res) => {
             .catch(err => console.error('Email error:', JSON.stringify(err, null, 2)));
         res.redirect(`/users/${formData.recipient}`)
     } catch (error) {
-        console.log(error)
         res.redirect("/")
     }
 }
@@ -93,7 +91,6 @@ const modifyRequest = async (req, res) => {
         res.redirect("/requests")
     }
     catch (error) {
-        console.log(error)
         res.redirect("/")
     }
 }
@@ -111,7 +108,6 @@ const deleteRequest = async (req, res) => {
         res.redirect("/requests")
 
     } catch (error) {
-        console.log(error)
         res.redirect("/")
     }
 }

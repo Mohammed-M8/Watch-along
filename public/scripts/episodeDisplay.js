@@ -21,7 +21,7 @@ const selection = async () => {
         episodesContainer.innerHTML = ""
         seasonEpisodes.forEach(e => {
             episodesContainer.innerHTML += `<label class="episode"><div><input type="checkbox" name="episodes[]" value="${e.number}">${e.number} - ${e.name}</div>
-            <img src="${e.image.medium}"></label>`
+            <img src="${e.image.medium}" alt="${e.name}"></label>`
         })
     }
 

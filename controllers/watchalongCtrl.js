@@ -13,7 +13,7 @@ const index = async (req, res) => {
             .populate('participants');
         res.render("watchalongs/index.ejs", { hosted, added })
     } catch (error) {
-        console.log(error)
+        
         res.redirect("/")
     }
 }
@@ -23,7 +23,7 @@ const watchalongInvites = async (req, res) => {
         const watchalongs = await Watchalong.find({ invitedUsers: req.session.user._id }).populate('host')
         res.render("watchalongs/invites.ejs", { watchalongs })
     } catch (error) {
-        console.log(error)
+        
         res.redirect("/")
     }
 }
@@ -39,7 +39,7 @@ const show = async (req, res) => {
 
         res.render("watchalongs/show.ejs", { watchalong, episodes })
     } catch (error) {
-        console.log(error)
+        
         res.redirect("/")
     }
 }
@@ -60,7 +60,7 @@ const newWatchalong = async (req, res) => {
             seasons
         });
     } catch (error) {
-        console.log(error)
+        
         res.redirect("/")
     }
 }
@@ -100,7 +100,7 @@ const create = async (req, res) => {
 
         res.redirect("/watchalongs");
     } catch (error) {
-        console.log(error);
+        ;
         res.redirect("/");
     }
 };
@@ -118,7 +118,7 @@ const edit = async (req, res) => {
 
         res.render("watchalongs/edit.ejs", { watchalong, showId, seasons, episodes })
     } catch (error) {
-        console.log(error)
+        
         res.redirect("/")
     }
 }
@@ -135,7 +135,7 @@ const update = async (req, res) => {
         await watchalong.save();
         res.redirect("/watchalongs")
     } catch (error) {
-        console.log(error)
+        
         res.redirect("/")
     }
 }
@@ -164,7 +164,7 @@ const updateInvite = async (req, res) => {
         await watchalong.save();
         res.redirect("/watchalongs")
     } catch (error) {
-        console.log(error)
+        
         res.redirect("/")
     }
 }
@@ -178,7 +178,7 @@ const deleteWatchalong = async (req, res) => {
         await Watchalong.findByIdAndDelete(req.params.id)
         res.redirect("/watchalongs")
     } catch (error) {
-        console.log(error)
+        
         res.redirect("/")
     }
 }
@@ -201,7 +201,7 @@ const addInvite = async (req, res) => {
 
         res.redirect(`/watchalongs/${watchalong._id}`)
     } catch (error) {
-        console.log(error)
+        
         res.redirect("/")
     }
 }
@@ -218,7 +218,7 @@ const removeInvite = async (req, res) => {
 
         res.redirect(`/watchalongs/${watchalong._id}`)
     } catch (error) {
-        console.log(error)
+        
         res.redirect("/")
     }
 }
@@ -240,7 +240,7 @@ const addParticipant = async (req, res) => {
 
         res.redirect(`/watchalongs/${watchalong._id}`)
     } catch (error) {
-        console.log(error)
+        
         res.redirect("/")
     }
 }
@@ -257,7 +257,7 @@ const removeParticipant = async (req, res) => {
 
         res.redirect(`/watchalongs/${watchalong._id}`)
     } catch (error) {
-        console.log(error)
+        
         res.redirect("/")
     }
 }

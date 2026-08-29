@@ -12,7 +12,7 @@ const index = async (req, res) => {
 
         res.render("users/index.ejs", { users, search })
     } catch (error) {
-        console.log(error)
+        
         res.redirect("/")
     }
 }
@@ -33,7 +33,7 @@ const search = async (req, res) => {
         }
         res.json(users)
     } catch (error) {
-        console.log(error)
+        
         res.status(500).json({ message: "Server error" })
     }
 }
@@ -69,7 +69,7 @@ const show = async (req, res) => {
         const friendCount = userObject.friends.length
         res.render('users/show.ejs', { userObject, isFriend, status, friendCount, watchalongs })
     } catch (error) {
-        console.log(error)
+        
         res.redirect("/")
     }
 }
@@ -80,7 +80,7 @@ const edit = async (req, res) => {
         if (user._id.toString() !== req.session.user._id.toString()) return res.redirect("/")
         res.render("users/edit.ejs", { user })
     } catch (error) {
-        console.log(error)
+        
         res.redirect("/")
     }
 }
@@ -91,7 +91,7 @@ const update = async (req, res) => {
         await user.save()
         res.redirect("/users")
     } catch (error) {
-        console.log(error)
+        
         res.redirect("/")
     }
 }
@@ -105,7 +105,7 @@ const watchlist = async (req, res) => {
         const watchlist = user.watchlist;
         res.render("users/watchlist.ejs", { watchlist })
     } catch (error) {
-        console.log(error)
+        
         res.redirect("/")
     }
 }
@@ -124,7 +124,7 @@ const removeFromWatchlist = async (req, res) => {
 
         res.redirect(`/users/${user._id}/watchlist`)
     } catch (error) {
-        console.log(error)
+        
         res.redirect("/")
     }
 }
@@ -155,7 +155,7 @@ const addToWatchlist = async (req, res) => {
 
         res.redirect(`/users/${user._id}/watchlist`)
     } catch (error) {
-        console.log(error)
+        
         res.redirect("/")
     }
 }
@@ -168,7 +168,7 @@ const friends = async (req, res) => {
         res.render('users/friends.ejs', { friends })
     }
     catch (error) {
-        console.log(error)
+        
         res.redirect("/")
     }
 }
@@ -187,7 +187,7 @@ const removeFriend = async (req, res) => {
 
     }
     catch (error) {
-        console.log(error)
+        
         res.redirect("/")
     }
 }
